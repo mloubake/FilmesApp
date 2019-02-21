@@ -1,28 +1,25 @@
 package com.example.filmesapp;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG  = "Método";
-    
     /**
-     * 1- Ciclo de vida - Feito
+     * 1- Criar um gerador de títulos de filmes mockados (fakes);
      *
-     * 2- Criar uma tela simples: Um EditText e um botão - Feito
+     * 2- Criar RecyclerView com títulos de filmes;
      *
-     * 3- Ao clicar no botão, levar para uma nova tela - Feito
+     * 3- Criar um layout de cada item da lista do RecyclerView;
      *
-     * 4- Refatorar para que exiba o valor digitado no EditText - Feito
+     * 4- Criar um modelo de filmes;
      *
-     * 5- Incluir um botão na segunda tela, que quando clicado, retorna a String concatenada com "123".
-     * Essa string é então retornada para a tela 1, sendo exibida em um Toast..
+     * 5- Criar uma tela com detalhes do filme selecionado;
      *
      * Ao final, vamos ter uma app que exibe uma lista de Posteres de filmes, trazendo de uma API,
      * mostrando os detalhes e os reviews desses filmes.
@@ -30,77 +27,33 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    //Executado quando cria a tela. Primeiro método.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final EditText editTextInformacao = findViewById(R.id.editTextInformacao);
-        final Button buttonTelaDois = findViewById(R.id.buttonTelaDois);
+        RecyclerView mRecyclerView = findViewById(R.id.listaFilme);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        FilmesAdapter mFilmesAdapter = new FilmesAdapter(gerarFilmes(),this);
+        mRecyclerView.setAdapter(mFilmesAdapter);
 
-        buttonTelaDois.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, TelaDoisActivity.class);
-                Bundle bundleInfo = new Bundle();
-                bundleInfo.putString(TelaDoisActivity.EXTRA_INFORMACAO, editTextInformacao.getText().toString());
-                intent.putExtras(bundleInfo);
-                startActivity(intent);
-            }
-        });
-
-        Log.d(TAG, "onCreate: ");
     }
 
+    public List<String> gerarFilmes() {
 
-    //Executado assim que a activity está para ser visível para o usuário. Executado depois do onCreate.
-    @Override
-    protected void onStart() {
-        super.onStart();
+        List<String> tituloFilme = new ArrayList<>();
 
-        Log.d(TAG, "onStart: ");
-    }
+        tituloFilme.add("E o Vento Levou");
+        tituloFilme.add("Titanic");
+        tituloFilme.add("Madagascar");
+        tituloFilme.add("Bastardos Inglórios");
+        tituloFilme.add("A Origem");
+        tituloFilme.add("A Ilha do Medo");
+        tituloFilme.add("Silêncio dos Inocentes");
+        tituloFilme.add("Dragão Vermelho");
+        tituloFilme.add("O Labirinto do Fauno");
 
-    //Tela visível e interagível para/com o usuário. Executado depois do onStart.
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        Log.d(TAG, "onResume: ");
-    }
-
-    //A activity começa a entrar no estado de não ser visível para o usuário. Executado depois do onResume. Dependendo do
-    //fluxo, vai para o onStop ou volta para o onResume.
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        Log.d(TAG, "onPause: ");
-    }
-
-    //A activity está totalmente invisível. Executado depois do onPause.
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        Log.d(TAG, "onStop: ");
-    }
-
-    //Executa quando a activity está sendo reexibida para o usuário(Quando o usuário retorna para uma activity).
-    //Executado depois do onStop. Executa logo em seguinda o onStart.
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-
-        Log.d(TAG, "onRestart: ");
-    }
-
-    //Executa quando a activity está preste a ser destruída. Executado depois do onStop.
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        Log.d(TAG, "onDestroy: ");
+        return tituloFilme;
     }
 }
